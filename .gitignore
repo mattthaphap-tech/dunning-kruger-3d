@@ -1,0 +1,7 @@
+node_modules/
+out/
+.DS_Store
+# Binary assets are NOT committed: the GitHub Actions workflow downloads
+# character.glb and reassembles voiceover-dk.mp3 from audio-parts/.
+public/character.glb
+public/voiceover-dk.mp3
