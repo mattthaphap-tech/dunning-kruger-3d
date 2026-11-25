@@ -73,13 +73,23 @@ const DespairRain: React.FC<{frame: number}> = ({frame}) => {
 
 export const EnvironmentProps: React.FC<{frame: number}> = ({frame}) => {
 	// Main curve track geometry
+	// ATTEMPT 3-3 (last resort, REPORTED): tube radius 0.45 -> 0.30.
+	// Attempts 3-1 (front camera) and 3-2 (peak-side camera) both still
+	// hid the robot's legs in shots 1 & 2. Root cause, verified by
+	// measurement: on the steep slope the tube's tilted cross-section
+	// puts its surface ~0.45 from the curve line, and the robot's feet
+	// sit only ~0.31 (perpendicular) from the line — the feet/shins are
+	// INSIDE the tube, so no camera angle can reveal them. A 0.30
+	// radius leaves the feet (0.31) just outside the surface while the
+	// road stays clearly visible; signposts/books/steps sit on
+	// getCurveY, not on the radius, so nothing else moves.
 	const trackGeo = useMemo(() => {
 		const pts: THREE.Vector3[] = [];
 		for (let x = -6; x <= 6.5; x += 0.1) {
 			pts.push(new THREE.Vector3(x, getCurveY(x), 0));
 		}
 		const curve = new THREE.CatmullRomCurve3(pts);
-		return new THREE.TubeGeometry(curve, 180, 0.45, 20, false);
+		return new THREE.TubeGeometry(curve, 180, 0.3, 20, false);
 	}, []);
 
 	// Giant books & question marks in the Valley of Despair
